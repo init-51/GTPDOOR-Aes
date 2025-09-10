@@ -1,0 +1,29 @@
+# Local/lab rules — Snort
+# Detect GTP-C style traffic on UDP/2123 and a simple base64-like payload heuristic.
+# Use SID >= 2,000,000 for local rules.
+
+# 1) Port-based (both directions)
+alert udp any any <> any 2123 (
+    msg:"LAB: GTP-C UDP/2123 observed";
+    sid:2000001; rev:1;
+    classtype:protocol-command-decode; priority:3;
+    threshold:type limit, track by_src, count 10, seconds 60;
+)
+
+# 2) Heuristic: long printable/base64-like payload
+alert udp any any <> any 2123 (
+    msg:"LAB: GTP-C base64-like payload over UDP/2123";
+    pcre:"/^[A-Za-z0-9+\/=]{64,}$/R";
+    sid:2000002; rev:1;
+    classtype:misc-activity; priority:3;
+    threshold:type limit, track by_src, count 5, seconds 60;
+)
+
+# 3) Minimal size sanity (GTPv1 header >= 8 bytes)
+alert udp any any <> any 2123 (
+    msg:"LAB: GTPv1 minimal header length (>=8 bytes)";
+    dsize:>8;
+    sid:2000003; rev:1;
+    classtype:misc-activity; priority:3;
+    threshold:type limit, track by_src, count 10, seconds 60;
+)
