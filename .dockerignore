@@ -1,0 +1,49 @@
+# Git metadata
+.git
+.gitignore
+.dockerignore
+
+# Captures / logs / temp
+pcaps/
+logs/
+tmp/
+temp/
+*.log
+
+# Python caches
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Environment & secrets
+.env
+.env.*
+*.pem
+*.key
+*.crt
+*.der
+*.p12
+.secrets
+
+# Large binary captures anywhere
+*.pcap
+*.pcapng
+
+# Dev-only folders
+.vscode/
+.idea/
+*.code-workspace
+
+# Docs and offline-only assets (not needed in images)
+docs/
+rules/
