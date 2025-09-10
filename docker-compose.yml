@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  listener:
+    build: ./listener
+    container_name: gtpdoor_listener
+    ports:
+      - "2123:2123/udp"            # expose to host if you want to test externally
+    cap_add: [ "NET_ADMIN", "NET_RAW" ]  # tcpdump needs these
+    volumes:
+      - ./pcaps:/tmp               # save .pcap files on host
+    restart: unless-stopped
+
+  simulator:
+    build: ./simulator
+    container_name: gtpdoor_simulator
+    depends_on: [ listener ]
+    restart: "no"
